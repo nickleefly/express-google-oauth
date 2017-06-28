@@ -1,8 +1,7 @@
 var google = require('googleapis')
-var plus = google.plus('v1')
 var OAuth2 = google.auth.OAuth2
-const ClientId = ''
-const ClientSecret = ''
+const ClientId = '824734289960-8kfj90qo65jng0hkl1a9oh59i2lll4nf.apps.googleusercontent.com'
+const ClientSecret = 'rAIIPMbg0GCQT-j-ceo2_e53'
 const RedirectionUrl = 'http://localhost:3000/auth/google/callback'
 
 exports.getOAuthClient = function getOAuthClient () {

@@ -4,7 +4,7 @@ var google = require('googleapis')
 var plus = google.plus('v1')
 var auth = require('./auth.js')
 var path = require('path')
-var favicon = require('serve-favicon')
+// var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
@@ -44,7 +44,7 @@ app.use('/auth/google/callback', function (req, res) {
             <h3>Login successful!!</h3>
             <a href="/details">Go to details page</a>
         `)
-    }else {
+    } else {
       res.send(`
             <h3>Login failed!!</h3>
         `)
@@ -55,7 +55,12 @@ app.use('/auth/google/callback', function (req, res) {
 app.use('/details', function (req, res) {
   var oauth2Client = auth.getOAuthClient()
   oauth2Client.setCredentials(req.session['tokens'])
-
+  oauth2Client.refreshAccessToken(function (err, tokens) {
+  // your access_token is now refreshed and stored in oauth2Client
+  // store these new tokens in a safe place (e.g. database)
+    if (err) console.log(err)
+    req.session.tokens = tokens
+  })
   var p = new Promise(function (resolve, reject) {
     plus.people.get({ userId: 'me', auth: oauth2Client }, function (err, response) {
       resolve(response || err)
